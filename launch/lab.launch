@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="lab_ros" name="filesOP" type="filesOP.py" required="true" />
+  <node pkg="lab_ros" name="buzzer" type="buzzer.py" required="true" />
+  <node pkg="lab_ros" name="lightsensors" type="lightsensors.py" required="true" />
+  <node pkg="lab_ros" name="motors" type="motors.py" required="true" />
+</launch>

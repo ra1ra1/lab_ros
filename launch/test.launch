@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="lab_ros" name="filesOP" type="filesOP.py" required="true" />
+  <test test-name="test_filesOP" pkg="lab_ros" type="test_filesOP.py" />
+</launch>
