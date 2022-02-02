@@ -36,7 +36,7 @@ if __name__ == '__main__':
 	    rospy.logerr("cannot write to " + devfile)
 	
 	with open('fvalue_with_time.csv', 'a') as fwt:
-	    fwt.write(str(t)+","+str(d.sum_forward)+","+str(d.right_side)+","+str(d.left_side)+"\n")
+	    fwt.write(str(t)+","+str(data[0])+","+str(data[1])+","+str(data[2])+","+str(data[3])+"\n")
 	    t+=(1.0/f)
 	    cnt+=1
 	if (cnt%(f*interval)==0):	
