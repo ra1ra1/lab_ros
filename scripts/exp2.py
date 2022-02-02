@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys, rospy, os
+import sys, rospy
 from pimouse_ros.msg import LightSensorValues
 from subprocess import call
 from subprocess import Popen
@@ -12,14 +12,6 @@ cnt=0 #count
 interval=5
 f=10
 cmd="./plot_time.sh"
-
-g = os.popen( 'gnuplot -noraise', 'w' )
-g.write("""
-set terminal vttek
-set xrange [0:20]
-set yrange [0:600]
-plot '-' with lines
-""")
 
 if __name__ == '__main__':
     devfile = '/dev/rtlightsensor0'
@@ -44,15 +36,10 @@ if __name__ == '__main__':
 	    rospy.logerr("cannot write to " + devfile)
 	
 	with open('fvalue_with_time.csv', 'a') as fwt:
-	    fwt.write(str(t)+","+str(d.sum_forward)+"\n")
+	    fwt.write(str(t)+","+str(d.sum_forward)+","+str(d.right_side)+","+str(d.left_side)+"\n")
 	    t+=(1.0/f)
 	    cnt+=1
-	    if (cnt%(f*interval)==0):
-	        g.write( "%f %d\n" % (t, d.sum_forward))
-		g.write( "e\n")
-	    #g.flush(i)	
-	    #plot_time = Popen(cmd, shell=True)
-	    #if (cnt == 20*f):
-	    #g.write( "e\n" )
-	    #g.flush()
+	if (cnt%(f*interval)==0):	
+	    plot_time = Popen(cmd, shell=True)
+
 	rate.sleep()
