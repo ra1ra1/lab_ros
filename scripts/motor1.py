@@ -5,10 +5,10 @@ from pimouse_ros.msg import MotorFreqs
 from geometry_msgs.msg import Twist
 
 class Motor():
-    def __init__(self):
+    def __init__(self): #initialization
         if not self.set_power(True): sys.exit(1)
 
-        rospy.on_shutdown(self.set_power)
+        rospy.on_shutdown(self.set_power) #Switching the power of the motor
         self.sub_raw = rospy.Subscriber('motor_raw', MotorFreqs, self.callback_raw_freq)
         self.sub_cmd_vel = rospy.Subscriber('cmd_vel', Twist, self.callback_cmd_vel)        
         self.last_time = rospy.Time.now()
@@ -27,7 +27,7 @@ class Motor():
         return False
 
     def set_raw_freq(self, left_hz, right_hz):
-        if not self.in_on:
+        if not self.is_on:
             rospy.logerr("not enpowered")
             return
         
@@ -39,6 +39,9 @@ class Motor():
                 rospy.logerr("cannot write to rtmotor_raw_*")
 
     def callback_raw_freq(self, message):
+	self.set_raw_freq(message.left_hz, message.right_hz)
+
+    def callback_cmd_vel(self, message):
 	forward_hz = 80000.0*message.linear.x / (9*math.pi)
         rot_hz = 400.0*message.angular.z / math.pi
         self.set_raw_freq(foward_hz - rot_hz, foward_hz + rot_hz)
